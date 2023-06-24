@@ -106,6 +106,7 @@
     #top-strip .icons {
       display: flex;
       align-items: center;
+      padding-bottom: 4px;
     }
 
     #top-strip .icons i {
@@ -144,6 +145,12 @@
       cursor: not-allowed;
     }
 
+    .gen-button{
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+
     #image-container {
       display: flex;
       justify-content: space-between;
@@ -169,44 +176,66 @@
       background-color: #f2f2f2;
     }
 
-    .popup-container {
-       display: none;
-       position: fixed;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: 100%;
-       background-color: rgba(0, 0, 0, 0.5);
-       z-index: 999;
-     }
+        /* Styles for the modal */
+        .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 36px;
+      border: 1px solid #888;
+      width: 300px;
+    }
+    
+    /* Styles for the input fields and buttons */
+    .input-field {
+      margin-bottom: 16px;
+    }
+    
+    input::placeholder {
+    font-size: 14px;
+    padding-left: 8px;
+    }
 
-     .popup-content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  width: 400px; /* Update the width as desired */
-  padding: 40px; /* Update the padding as desired */
-  border-radius: 5px;
-}
+    .input-field label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .input-field input {
+      width: 100%;
+      padding: 5px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-     .popup-content input {
-       width: 100%;
-       padding: 10px;
-       border: 1px solid #FC6A03;
-       margin-bottom: 10px;
-     }
-
-     .popup-content button {
-       background-color: #FC6A03;
-       color: white;
-       padding: 10px 20px;
-       border: none;
-       border-radius: 3px;
-       font-size: 18px;
-       cursor: pointer;
-     }
+    #save-button{
+      background-color: #FC6A03;
+      color: #fff;
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      column-gap: 8px;
+    }
+    
+    .button-container button {
+      border: 1px solid #ccc;
+      padding: 5px 10px;
+      width: 100%;
+      border-radius: 4px;
+    }
    </style>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -232,7 +261,6 @@
   <li><a href="index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Log out</a></li> <!-- Add this line -->
 </ul>
   </div>
-
   <div id="main-dashboard">
     <div id="top-strip" style="border-bottom: 2px solid #FC6A03;">
       <div class="icons">
@@ -246,21 +274,44 @@
       </div>
     </div>
 
+      <!-- Button to open the modal -->
+  <div class="gen-button">
+    <button id="generate-url-btn">Generate Url</button>
+  </div>
+
+  <!-- The modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <div class="input-field">
+        <label for="candidate-name">Candidate Name:</label>
+        <input type="text" id="candidate-name" placeholder="Enter Candidate Name" required minlength="5" />
+      </div>
+      <div class="input-field">
+        <label for="candidate-email">Candidate Email:</label>
+        <input type="email" id="candidate-email" placeholder="Enter Candidate Email" required />
+      </div>
+      <div class="button-container">
+        <button onclick="generateLink()" id="save-button">Generate</button>
+        <button onclick="closePopup()" id="close-modal-button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
     <!-- Popup box container -->
-    <div class="popup-container">
+    <!-- <div class="popup-container">
       <div class="popup-content">
         <input type="text" id="candidate-name" placeholder="Candidate Name" required minlength="5">
         <input type="email" id="candidate-email" placeholder="Candidate Email" required>
         <button onclick="generateLink()">Generate</button>
         <button onclick="closePopup()">Cancel</button>
       </div>
-    </div>
+    </div> -->
 
-    <div id="hello-text">
+    <!-- Modified code below: -->
+    <!-- <div id="hello-text">
       <span></span>
-      <!-- Modified code below: -->
       <button onclick="promptAlert()" id="generate-url-btn">Generate URL</button>
-    </div>
+    </div> -->
 
     <div class="row align-items-center vh-100">
 
@@ -314,6 +365,50 @@ function logout() {
 }
 
 // ...
+</script>
+<script>
+  // Get the modal element
+  var modal = document.getElementById("modal");
+
+  // Get the button that opens the modal
+  var openModalButton = document.getElementById("generate-url-btn");
+
+  // Get the button that closes the modal
+  var closeModalButton = document.getElementById("close-modal-button");
+
+  // Get the button that saves the input values
+  var saveButton = document.getElementById("save-button");
+
+  // Function to open the modal
+  function openModal() {
+    modal.style.display = "block";
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    modal.style.display = "none";
+  }
+
+  // Function to save the input values
+  function saveInputValues() {
+    var candidateName = document.getElementById("candidate-name").value;
+    var candidateEmail = document.getElementById("candidate-email").value;
+    console.log("Candidate Name:", candidateName);
+    console.log("Candidate Email:", candidateEmail);
+    closeModal();
+  }
+
+  // Event listeners for the buttons
+  openModalButton.addEventListener("click", openModal);
+  closeModalButton.addEventListener("click", closeModal);
+  saveButton.addEventListener("click", saveInputValues);
+
+  // Close the modal if the user clicks outside of it
+  window.addEventListener("click", function(event) {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
 </script>
 </body>
 </html>
