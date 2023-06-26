@@ -278,23 +278,29 @@
   <div class="gen-button">
     <button id="generate-url-btn">Generate Url</button>
   </div>
+  <p id="test"></p>
 
   <!-- The modal -->
   <div id="modal" class="modal">
+    <form action="sendEmail.php" method="POST">
     <div class="modal-content">
       <div class="input-field">
         <label for="candidate-name">Candidate Name:</label>
-        <input type="text" id="candidate-name" placeholder="Enter Candidate Name" required minlength="5" />
+        <input type="text" id="candidate-name" name="name" placeholder="Enter Candidate Name" required />
       </div>
       <div class="input-field">
         <label for="candidate-email">Candidate Email:</label>
-        <input type="email" id="candidate-email" placeholder="Enter Candidate Email" required />
+        <input type="email" id="candidate-email" name="email" placeholder="Enter Candidate Email" required />
       </div>
+      <input type="hidden" id="generated-link" name="link"  />
+      <input type="hidden" id="agent-email" name="agentEmail"  />
       <div class="button-container">
-        <button onclick="generateLink()" id="save-button">Generate</button>
+        <button onclick="generateLink()" type="submit" name="submit" id="save-button">Generate</button>
+        <!-- <button type="submit" name="submit" id="save-button">Generate</button> -->
         <button onclick="closePopup()" id="close-modal-button">Cancel</button>
       </div>
     </div>
+    </form>
   </div>
 
     <!-- Popup box container -->

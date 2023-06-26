@@ -43,6 +43,12 @@ var newTokenKey = "";
     var candidateName = "";
     var candidateEmail = "";
 
+    // function getCandidateData(){
+    //   var candidateName = document.getElementById("candidate-name").value;
+    //   var candidateEmail = document.getElementById("candidate-email").value;
+    //   generateLink();
+    // }
+
     function promptAlert(){
       let candidateNameText = prompt("Please enter candidate name");
       let candidateEmailText = prompt("Please enter candidate email");
@@ -75,8 +81,10 @@ var newTokenKey = "";
     }
 
     function generateLink() {
-      //var candidateName = document.getElementById("candidate-name").value;
-      //var candidateEmail = document.getElementById("candidate-email").value;
+      
+      // FETCHING CANDIDATES DATA FROM FORM 
+      var candidateName = document.getElementById("candidate-name").value;
+      var candidateEmail = document.getElementById("candidate-email").value;
 
       if (candidateName.length < 5) {
         alert("Candidate Name should have a minimum of 5 characters.");

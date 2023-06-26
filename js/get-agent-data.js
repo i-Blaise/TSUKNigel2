@@ -23,6 +23,7 @@ function getTokenIdFromFirebase() {
     });
 
     return tokenId;
+
   }
 
 
@@ -113,6 +114,11 @@ function readData(){
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // User is signed in.
+
+          // Send User Email to Form 
+          document.getElementById("agent-email").value = user.email;
+
+
           var agentID = user.uid;
           console.log("AgentID: " + agentID);
 
@@ -138,6 +144,10 @@ function readData(){
 
                 snapshot.forEach(function(childSnapshot){
                     var tokenData = childSnapshot.val();
+
+                    // Send link to Form 
+                    var linkDisplay = tokenData.linkWithToken  + "?agentID=" + agentID + "&" + "tokenID=" + activeTokenID;
+                    document.getElementById("generated-link").value = linkDisplay;
 
                     var row = document.createElement("tr");
 
