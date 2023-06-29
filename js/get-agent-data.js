@@ -107,7 +107,7 @@ function disableButton(state) {
 //fetch agent, token and candidate info on dashboard load 
 function readData(){
 
-    checkTokenStatus();
+    // checkTokenStatus();
     countTokens();
     //getTokenIdFromFirebase();
 
@@ -146,8 +146,8 @@ function readData(){
                     var tokenData = childSnapshot.val();
 
                     // Send link to Form 
-                    var linkDisplay = tokenData.linkWithToken  + "?agentID=" + agentID + "&" + "tokenID=" + activeTokenID;
-                    document.getElementById("generated-link").value = linkDisplay;
+                    // var linkDisplay = "?agentID=" + agentID + "&" + "tokenID=" + childSnapshot.key;
+                    // document.getElementById("generated-link").value = linkDisplay;
 
                     var row = document.createElement("tr");
 
@@ -162,7 +162,8 @@ function readData(){
                     row.appendChild(token);
 
                     link = document.createElement("td");
-                    link.textContent = tokenData.linkWithToken  + "?agentID=" + agentID + "&" + "tokenID=" + activeTokenID;
+                    link.textContent = tokenData.linkWithToken  + "?agentID=" + agentID + "&" + "tokenID=" + childSnapshot.key;;
+                    link.setAttribute("class", "hide-column");
                     //"----Not Aavilable-----"
                     
                     row.appendChild(link);
